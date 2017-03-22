@@ -9,8 +9,6 @@ import akka.stream.ActorMaterializer
 
 object WebServer {
 
-  def uuid = java.util.UUID.randomUUID.toString
-
   def main(args: Array[String]): Unit = {
 
     implicit val system = ActorSystem()
