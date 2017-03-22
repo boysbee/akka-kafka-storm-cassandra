@@ -6,6 +6,7 @@ import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
+import config.Config._
 
 object WebServer {
 
@@ -24,7 +25,7 @@ object WebServer {
       }
 
     println(s"Server online at http://localhost:9090/")
-    Http().bindAndHandle(route, "0.0.0.0", 9090)
+    Http().bindAndHandle(route, ServerHost, ServerPort)
 
   }
 }
