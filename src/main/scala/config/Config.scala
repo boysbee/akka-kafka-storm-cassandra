@@ -6,4 +6,6 @@ object Config {
 
   val ServerHost = "0.0.0.0"
   val ServerPort = 8090
+
+  val KafkaTopicName = "tests"
 }

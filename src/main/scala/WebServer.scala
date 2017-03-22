@@ -6,7 +6,11 @@ import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
+import spray.json.DefaultJsonProtocol._
+import spray.json._
 import config.Config._
+import kafka.KafkaMessageProducer
+import domain.Event
 
 object WebServer {
 
@@ -17,10 +21,22 @@ object WebServer {
 
     implicit val executionContext = system.dispatcher
 
+    implicit val eventFormat = jsonFormat4(Event)
+    
+    val kafkaProducer = new KafkaMessageProducer
+
     val route: Route =
       get {
-        pathPrefix("hello") {
+        pathPrefix("ping") {
           complete("ok")
+        }
+      } ~
+      post {
+        pathPrefix("event") {
+          entity(as[Event]) { event =>
+            kafkaProducer.createKafkaMessage(event.toJson.compactPrint)
+            complete("Message successfully sent to Kafka")
+          }
         }
       }
 
