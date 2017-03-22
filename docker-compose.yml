@@ -1,0 +1,32 @@
+version: '2'
+services:
+    zookeeper:
+        image: zookeeper
+        restart: always
+
+    kafka:
+        image: wurstmeister/kafka
+        ports:
+            - 9092:9092
+        depends_on:
+            - zookeeper
+        restart: always
+        environment:
+            KAFKA_ADVERTISED_HOST_NAME: 172.16.11.156
+            KAFKA_CREATE_TOPICS: "tests:1:1"
+            KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+        volumes:
+              - /var/run/docker.sock:/var/run/docker.sock
+
+    akka-kafka-storm-cassandra-api:
+        build: .
+        depends_on:
+            - zookeeper
+            - kafka
+        links:
+            - zookeeper
+            - kafka
+        restart: always
+        ports:
+            - 8090:8090
+            - 9090:9090
