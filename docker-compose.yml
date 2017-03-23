@@ -4,6 +4,42 @@ services:
         image: zookeeper
         restart: always
 
+    nimbus:
+        image: storm
+        command: storm nimbus
+        depends_on:
+            - zookeeper
+        links:
+            - zookeeper
+        restart: always
+        ports:
+            - 6627:6627
+
+    supervisor:
+        image: storm
+        command: storm supervisor
+        depends_on:
+            - nimbus
+            - zookeeper
+        links:
+            - nimbus
+            - zookeeper
+        restart: always
+
+    ui:
+        image: storm
+        command: storm ui
+        depends_on:
+            - nimbus
+            - zookeeper
+            - supervisor
+        links:
+            - nimbus
+            - zookeeper
+        restart: always
+        ports:
+            - 8080:8080
+
     kafka:
         image: wurstmeister/kafka
         ports:
