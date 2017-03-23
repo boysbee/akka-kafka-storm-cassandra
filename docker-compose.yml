@@ -61,11 +61,30 @@ services:
             - 9042:9042
             - 9160:9160
 
+    myweb-storm:
+        image: storm
+        command: storm jar /topology.jar storm.Topology
+        depends_on:
+            - nimbus
+            - zookeeper
+            - supervisor
+            - kafka
+            - cassandra
+        links:
+            - nimbus
+            - zookeeper
+            - supervisor
+            - kafka
+            - cassandra
+        volumes:
+            - ./target/akka-kafka-storm-cassandra-assembly-0.0.1.jar:/topology.jar
+
     akka-kafka-storm-cassandra-api:
         build: .
         depends_on:
             - zookeeper
             - kafka
+            - myweb-storm
             - cassandra
         links:
             - zookeeper
