@@ -4,7 +4,7 @@ import config.Config
 import org.apache.storm.kafka.{KafkaSpout, SpoutConfig, ZkHosts}
 import org.apache.storm.topology.TopologyBuilder
 import org.apache.storm.{StormSubmitter, Config => StormConfig}
-import storm.bolts.CounterBolt
+import storm.bolts.{CounterBolt, StatsBolt}
 // import storm.bolts.{CounterBolt, ItemItemBolt, StatsBolt, TrendingBolt}
 
 
@@ -17,6 +17,7 @@ object Topology {
     val builder = new TopologyBuilder()
     builder.setSpout("kafka_spout", kafkaSpout)
     builder.setBolt("counter_bolt", new CounterBolt()).shuffleGrouping("kafka_spout")
+    builder.setBolt("stats_bolt", new StatsBolt()).shuffleGrouping("kafka_spout")
     val config = new StormConfig()
     config.setDebug(true)
 

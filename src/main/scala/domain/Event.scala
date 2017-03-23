@@ -1,3 +1,3 @@
 package domain
 
-case class Event(user: String, itemId: String, event: String, timestamp: Long)
+case class Event(userId: String, itemId: String, event: String, timestamp: Long, price: Option[Double])

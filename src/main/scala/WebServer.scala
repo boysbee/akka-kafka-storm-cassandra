@@ -1,16 +1,14 @@
-import scala.concurrent.Future
-import scala.io.StdIn
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
+import config.Config._
+import domain.Event
+import kafka.KafkaMessageProducer
 import spray.json.DefaultJsonProtocol._
 import spray.json._
-import config.Config._
-import kafka.KafkaMessageProducer
-import domain.Event
 
 object WebServer {
 
@@ -21,7 +19,7 @@ object WebServer {
 
     implicit val executionContext = system.dispatcher
 
-    implicit val eventFormat = jsonFormat4(Event)
+    implicit val eventFormat = jsonFormat5(Event)
     
     val kafkaProducer = new KafkaMessageProducer
 

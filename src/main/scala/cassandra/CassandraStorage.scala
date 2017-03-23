@@ -18,6 +18,7 @@ object DefaultConnector {
 class CassandraStorage(val keyspace: KeySpaceDef) extends Database(keyspace) {
 
   object userViews extends Views with keyspace.Connector
+  object stats extends Stats with keyspace.Connector
 
 }
 

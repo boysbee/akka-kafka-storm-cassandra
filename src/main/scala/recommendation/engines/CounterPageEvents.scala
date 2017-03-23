@@ -12,7 +12,7 @@ class CounterPageEvents(storage: CassandraStorage) {
 
   def trackEvent(event: Event): Unit = {
 
-    val userId = event.user
+    val userId = event.userId
     val itemId = event.itemId
     val action = event.event
     val weight = Config.ActionWeights(action)
