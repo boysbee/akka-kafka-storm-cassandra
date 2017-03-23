@@ -12,6 +12,7 @@ val zookeeperVesion = "3.4.9"
 val kafkaVersion = "0.10.1.1"
 val akkaHttpVersion = "10.0.0"
 val scalatestVersion = "3.0.1"
+val PhantomVersion = "1.29.6"
 
 resolvers ++= Seq(
   "Typesafe repository snapshots"    at "http://repo.typesafe.com/typesafe/snapshots/",
@@ -43,8 +44,11 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-http" % akkaHttpVersion,
   "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpVersion,
     "com.github.nscala-time" %% "nscala-time" % "2.14.0",
-    "org.scalatest" %% "scalatest" % scalatestVersion % "test"
+  "org.scalatest" %% "scalatest" % scalatestVersion % "test",
+  "com.websudos" %% "phantom-dsl" % PhantomVersion
 )
+
+mainClass in assembly := Some("WebServer")
 
 assemblyMergeStrategy in assembly := {
   case m if m.toLowerCase.endsWith("manifest.mf") => MergeStrategy.discard
@@ -56,3 +60,5 @@ assemblyMergeStrategy in assembly := {
   case "reference.conf" => MergeStrategy.concat
   case _ => MergeStrategy.first
 }
+
+PhantomSbtPlugin.projectSettings
